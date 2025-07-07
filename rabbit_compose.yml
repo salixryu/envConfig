@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5671:5671"   # AMQP over SSL
+      - "5672:5672"   # AMQP
+      - "15672:15672" # HTTP management UI
+      - "15674:15674" # MQTT over WebSockets
+      - "1883:1883"   # MQTT
+      - "8883:8883"   # MQTT over SSL
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management listener [{port,15672}]"
+    networks:
+      - messaging_network
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    command: >
+      sh -c "
+        rabbitmq-plugins enable rabbitmq_management rabbitmq_mqtt rabbitmq_web_mqtt rabbitmq_web_stomp &&
+        rabbitmq-server
+      "
+
+networks:
+  messaging_network:
+    driver: bridge
+
+volumes:
+  rabbitmq_data: 

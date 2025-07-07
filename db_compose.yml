@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  rtd_mysql:
+    image: mysql:8.0
+    container_name: rtd-mysql-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: rtd_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 1234
+      MYSQL_TLS_VERSION: ""
+    volumes:
+      - rtd_mysql_data:/var/lib/mysql
+    networks:
+      - db_network
+
+  mcs_mysql:
+    image: mysql:8.0
+    container_name: mcs-mysql-container
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: mcs_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 1234
+      MYSQL_TLS_VERSION: ""
+    volumes:
+      - mcs_mysql_data:/var/lib/mysql
+    networks:
+      - db_network
+
+  mes_mysql:
+    image: mysql:8.0
+    container_name: mes-mysql-container
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: mes_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 1234
+      MYSQL_TLS_VERSION: ""
+    volumes:
+      - mes_mysql_data:/var/lib/mysql
+    networks:
+      - db_network
+
+  # custom_mysql:
+  #   image: mysql:latest
+  #   container_name: custom-mysql-container
+  #   ports:
+  #     - "3309:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 1234
+  #     MYSQL_DATABASE: custom_db
+  #     MYSQL_USER: admin
+  #     MYSQL_PASSWORD: 1234
+  #     MYSQL_TLS_VERSION: ""
+  #   volumes:
+  #     - custom_mysql_data:/var/lib/mysql
+  #   networks:
+  #     - db_network
+
+volumes:
+  rtd_mysql_data:
+  mcs_mysql_data:
+  mes_mysql_data:
+  # custom_mysql_data:
+
+networks:
+  db_network:
+    driver: bridge
